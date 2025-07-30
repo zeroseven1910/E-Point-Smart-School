@@ -1,0 +1,164 @@
+@extends('layouts.app')
+
+@section('title', 'Tambah Kelas')
+@section('page-title', 'Tambah Kelas')
+
+@section('content')
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Form Tambah Kelas</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('classes.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nama Kelas</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                               id="name" name="name" value="{{ old('name') }}" required readonly
+                               placeholder="Nama kelas akan otomatis terisi">
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="form-text">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> 
+                                Nama kelas akan otomatis terisi berdasarkan pilihan tingkat, jurusan, dan nomor kelas
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tingkat" class="form-label">Tingkat Kelas</label>
+                        <select class="form-select @error('tingkat') is-invalid @enderror" id="tingkat" name="tingkat" required>
+                            <option value="">Pilih Tingkat</option>
+                            <option value="10" {{ old('tingkat') == '10' ? 'selected' : '' }}>Kelas 10</option>
+                            <option value="11" {{ old('tingkat') == '11' ? 'selected' : '' }}>Kelas 11</option>
+                            <option value="12" {{ old('tingkat') == '12' ? 'selected' : '' }}>Kelas 12</option>
+                        </select>
+                        @error('tingkat')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="jurusan" class="form-label">Jurusan</label>
+                        <select class="form-select @error('jurusan') is-invalid @enderror" id="jurusan" name="jurusan" required>
+                            <option value="">Pilih Jurusan</option>
+                        </select>
+                        @error('jurusan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nomor_kelas" class="form-label">Nomor Kelas</label>
+                        <select class="form-select @error('nomor_kelas') is-invalid @enderror" id="nomor_kelas" name="nomor_kelas" required>
+                            <option value="">Pilih Nomor Kelas</option>
+                        </select>
+                        @error('nomor_kelas')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ route('classes.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i> Kembali
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i> Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    const jurusanOptions = {
+        '10': [
+            { value: 'AK', text: 'Akuntansi', max: 4 },
+            { value: 'OTKP', text: 'Otomatisasi Tata Kelola Perkantoran', max: 3 },
+            { value: 'MP', text: 'Manajemen Perkantoran', max: 3 },
+            { value: 'DKV', text: 'Desain Komunikasi Visual', max: 3 },
+            { value: 'TJKT', text: 'Teknik Jaringan Komputer dan Telekomunikasi', max: 2 },
+            { value: 'PPLG', text: 'Pengembangan Perangkat Lunak dan Gim', max: 1 }
+        ],
+        '11': [
+            { value: 'AK', text: 'Akuntansi', max: 4 },
+            { value: 'OTKP', text: 'Otomatisasi Tata Kelola Perkantoran', max: 3 },
+            { value: 'BD', text: 'Bisnis Daring', max: 1 },
+            { value: 'BR', text: 'Bisnis Ritel', max: 2 },
+            { value: 'DKV', text: 'Desain Komunikasi Visual', max: 3 },
+            { value: 'TKJ', text: 'Teknik Komputer dan Jaringan', max: 2 },
+            { value: 'RPL', text: 'Rekayasa Perangkat Lunak', max: 1 }
+        ],
+        '12': [
+            { value: 'AK', text: 'Akuntansi', max: 4 },
+            { value: 'OTKP', text: 'Otomatisasi Tata Kelola Perkantoran', max: 3 },
+            { value: 'BD', text: 'Bisnis Daring', max: 1 },
+            { value: 'BR', text: 'Bisnis Ritel', max: 2 },
+            { value: 'DKV', text: 'Desain Komunikasi Visual', max: 3 },
+            { value: 'TKJ', text: 'Teknik Komputer dan Jaringan', max: 2 },
+            { value: 'RPL', text: 'Rekayasa Perangkat Lunak', max: 1 }
+        ]
+    };
+
+    document.getElementById('tingkat').addEventListener('change', function() {
+        const tingkat = this.value;
+        const jurusanSelect = document.getElementById('jurusan');
+        const nomorKelasSelect = document.getElementById('nomor_kelas');
+        
+        jurusanSelect.innerHTML = '<option value="">Pilih Jurusan</option>';
+        nomorKelasSelect.innerHTML = '<option value="">Pilih Nomor Kelas</option>';
+        
+        if (tingkat && jurusanOptions[tingkat]) {
+            jurusanOptions[tingkat].forEach(jurusan => {
+                const option = document.createElement('option');
+                option.value = jurusan.value;
+                option.textContent = jurusan.text;
+                option.dataset.max = jurusan.max;
+                jurusanSelect.appendChild(option);
+            });
+        }
+        updateClassName();
+    });
+
+    document.getElementById('jurusan').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const maxKelas = selectedOption.dataset.max;
+        const nomorKelasSelect = document.getElementById('nomor_kelas');
+        
+        nomorKelasSelect.innerHTML = '<option value="">Pilih Nomor Kelas</option>';
+        
+        if (maxKelas) {
+            for (let i = 1; i <= parseInt(maxKelas); i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                nomorKelasSelect.appendChild(option);
+            }
+        }
+        updateClassName();
+    });
+
+    document.getElementById('nomor_kelas').addEventListener('change', updateClassName);
+
+    function updateClassName() {
+        const tingkat = document.getElementById('tingkat').value;
+        const jurusan = document.getElementById('jurusan').value;
+        const nomorKelas = document.getElementById('nomor_kelas').value;
+        const nameField = document.getElementById('name');
+        
+        if (tingkat && jurusan && nomorKelas) {
+            nameField.value = `${tingkat} ${jurusan} ${nomorKelas}`;
+        } else {
+            nameField.value = '';
+        }
+    }
+</script>
+@endpush
+@endsection

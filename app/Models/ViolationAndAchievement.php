@@ -1,3 +1,4 @@
+<?php
 // app/Models/ViolationAndAchievement.php
 
 namespace App\Models;

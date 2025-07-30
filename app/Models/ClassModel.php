@@ -1,3 +1,4 @@
+<?php
 // app/Models/ClassModel.php
 
 namespace App\Models;

@@ -1,3 +1,4 @@
+<?php
 // app/Models/Point.php
 
 namespace App\Models;

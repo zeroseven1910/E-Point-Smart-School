@@ -1,3 +1,4 @@
+<?php
 // app/Models/Student.php
 
 namespace App\Models;
