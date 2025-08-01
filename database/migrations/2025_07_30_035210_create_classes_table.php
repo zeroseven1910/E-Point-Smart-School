@@ -1,3 +1,4 @@
+<?php
 // database/migrations/2024_01_01_000002_create_classes_table.php
 
 use Illuminate\Database\Migrations\Migration;
