@@ -1,39 +1,58 @@
 <?php
-// routes/web.php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\PointController;
-use App\Http\Controllers\ViolationController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ViolationController;
+use App\Http\Controllers\PointController;
+use App\Http\Controllers\DashboardController;
 
-// Authentication Routes
-Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+// Public routes
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// Authentication routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Protected Routes
-Route::middleware('auth')->group(function () {
+// Protected routes yang memerlukan authentication
+Route::middleware(['auth'])->group(function () {
     
-    // Dashboard Routes
-    Route::get('/dashboard/guru', [DashboardController::class, 'guru'])->name('dashboard.guru');
-    Route::get('/dashboard/tata-tertib', [DashboardController::class, 'tataTertib'])->name('dashboard.tata-tertib');
+    // Dashboard - bisa diakses semua role
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // Student Routes
-    Route::resource('students', StudentController::class);
-    Route::get('/students/search', [StudentController::class, 'search'])->name('students.search');
+    // Admin routes
+    Route::middleware(['role:admin'])->group(function () {
+        Route::resource('classes', ClassController::class);
+        Route::resource('students', StudentController::class);
+        Route::resource('violations', ViolationController::class);
+        Route::get('/admin/reports', function () {
+            return view('admin.reports');
+        })->name('admin.reports');
+    });
     
-    // Point Routes
-    Route::resource('points', PointController::class);
-    Route::get('/points/history/{student}', [PointController::class, 'history'])->name('points.history');
+    // Teacher routes
+    Route::middleware(['role:teacher'])->group(function () {
+        Route::get('/teacher/dashboard', function () {
+            return view('teacher.dashboard');
+        })->name('teacher.dashboard');
+        Route::resource('points', PointController::class);
+    });
     
-    // Violation and Achievement Routes
-    Route::resource('violations', ViolationController::class);
-    
-    // Class Routes
-    Route::resource('classes', ClassController::class);
-    
+    // Student routes
+    Route::middleware(['role:student'])->group(function () {
+        Route::get('/student/dashboard', function () {
+            return view('student.dashboard');
+        })->name('student.dashboard');
+        Route::get('/student/points', [PointController::class, 'myPoints'])->name('student.points');
+    });
 });

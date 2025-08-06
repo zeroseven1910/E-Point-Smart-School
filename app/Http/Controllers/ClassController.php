@@ -53,3 +53,4 @@ class ClassController extends Controller
         return redirect()->route('classes.index')->with('success', 'Kelas berhasil dihapus');
     }
 }
+

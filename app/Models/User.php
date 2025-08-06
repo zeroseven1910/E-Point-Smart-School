@@ -1,5 +1,4 @@
 <?php
-// app/Models/User.php
 
 namespace App\Models;
 
@@ -12,6 +11,11 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'email',
@@ -19,11 +23,21 @@ class User extends Authenticatable
         'role',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -32,14 +46,23 @@ class User extends Authenticatable
         ];
     }
 
-    public function students()
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole($role)
     {
-        return $this->hasMany(Student::class);
+        return $this->role === $role;
     }
 
-    public function points()
+    /**
+     * Check if user has any of the given roles
+     */
+    public function hasAnyRole($roles)
     {
-        return $this->hasMany(Point::class);
+        if (is_string($roles)) {
+            return $this->hasRole($roles);
+        }
+        
+        return in_array($this->role, $roles);
     }
 }
-
