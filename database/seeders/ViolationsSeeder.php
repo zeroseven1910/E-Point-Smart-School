@@ -1,12 +1,11 @@
-
 <?php
 
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\ViolationAndAchievement;
+use App\Models\ViolationsAndAchievement;
 
-class ViolationSeeder extends Seeder
+class ViolationsSeeder extends Seeder
 {
     public function run(): void
     {
@@ -47,7 +46,7 @@ class ViolationSeeder extends Seeder
         ];
 
         foreach ($violations as $violation) {
-            ViolationAndAchievement::create($violation);
+            ViolationsAndAchievement::create($violation);
         }
     }
 }

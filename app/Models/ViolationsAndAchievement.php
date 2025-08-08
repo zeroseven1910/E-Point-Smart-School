@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ViolationAndAchievement extends Model
+class ViolationsAndAchievement extends Model
 {
     use HasFactory;
 

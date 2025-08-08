@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ClassSeeder::class,
             StudentSeeder::class,
-            ViolationSeeder::class,
+            ViolationsSeeder::class,
         ]);
     }
 }
