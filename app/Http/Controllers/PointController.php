@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Point;
 use App\Models\Student;
-use App\Models\ViolationAndAchievement;
+use App\Models\ViolationsAndAchievement;
 use Illuminate\Support\Facades\Auth;
 
 class PointController extends Controller
@@ -23,7 +23,7 @@ class PointController extends Controller
     public function create()
     {
         $students = Student::with('class')->get();
-        $violations = ViolationAndAchievement::all();
+        $violations = ViolationsAndAchievement::all();
         return view('points.create', compact('students', 'violations'));
     }
 

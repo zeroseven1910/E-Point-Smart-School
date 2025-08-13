@@ -31,7 +31,7 @@ class Point extends Model
 
     public function violation()
     {
-        return $this->belongsTo(ViolationAndAchievement::class, 'violation_id');
+        return $this->belongsTo(ViolationsAndAchievement::class, 'violation_id');
     }
 
     public function user()

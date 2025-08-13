@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\ClassModel;
-use App\Models\ViolationAndAchievement;
+use App\Models\ViolationsAndAchievement;
 use App\Models\Point;
 use Illuminate\Support\Facades\DB;
 
@@ -16,8 +16,8 @@ class DashboardController extends Controller
     {
         $totalSiswa = Student::count();
         $totalKelas = ClassModel::count();
-        $totalPelanggaran = ViolationAndAchievement::where('type', 'pelanggaran')->count();
-        $totalPrestasi = ViolationAndAchievement::where('type', 'prestasi')->count();
+        $totalPelanggaran = ViolationsAndAchievement::where('type', 'pelanggaran')->count();
+        $totalPrestasi = ViolationsAndAchievement::where('type', 'prestasi')->count();
 
         // Top 5 Pelanggaran Siswa
         $topPelanggaranSiswa = Student::select('students.name', 'classes.name as class_name')
@@ -32,7 +32,7 @@ class DashboardController extends Controller
             ->get();
 
         // Statistik Pelanggaran Terbanyak
-        $pelanggaranTerbanyak = ViolationAndAchievement::select('description')
+        $pelanggaranTerbanyak = ViolationsAndAchievement::select('description')
             ->join('points', 'violations_and_achievements.id', '=', 'points.violation_id')
             ->where('type', 'pelanggaran')
             ->groupBy('violations_and_achievements.id', 'description')

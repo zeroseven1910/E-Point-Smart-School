@@ -2,13 +2,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ViolationAndAchievement;
+use App\Models\ViolationsAndAchievement;
 
-class ViolationController extends Controller
+class ViolationsController extends Controller
 {
     public function index()
     {
-        $violations = ViolationAndAchievement::paginate(15);
+        $violations = ViolationsAndAchievement::paginate(15);
         return view('violations.index', compact('violations'));
     }
 
@@ -25,17 +25,17 @@ class ViolationController extends Controller
             'point' => 'required|integer',
         ]);
 
-        ViolationAndAchievement::create($request->all());
+        ViolationsAndAchievement::create($request->all());
 
         return redirect()->route('violations.index')->with('success', 'Pelanggaran/Prestasi berhasil ditambahkan');
     }
 
-    public function edit(ViolationAndAchievement $violation)
+    public function edit(ViolationsAndAchievement $violation)
     {
         return view('violations.edit', compact('violation'));
     }
 
-    public function update(Request $request, ViolationAndAchievement $violation)
+    public function update(Request $request, ViolationsAndAchievement $violation)
     {
         $request->validate([
             'type' => 'required|in:pelanggaran,prestasi',
@@ -48,7 +48,7 @@ class ViolationController extends Controller
         return redirect()->route('violations.index')->with('success', 'Pelanggaran/Prestasi berhasil diperbarui');
     }
 
-    public function destroy(ViolationAndAchievement $violation)
+    public function destroy(ViolationsAndAchievement $violation)
     {
         $violation->delete();
         return redirect()->route('violations.index')->with('success', 'Pelanggaran/Prestasi berhasil dihapus');
