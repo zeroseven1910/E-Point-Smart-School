@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/DashboardController.php
 
 namespace App\Http\Controllers;
 
@@ -8,19 +7,38 @@ use App\Models\Student;
 use App\Models\ClassModel;
 use App\Models\ViolationsAndAchievement;
 use App\Models\Point;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    /**
+     * Dashboard utama → redirect sesuai role user
+     */
+    public function index()
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole('teacher')) {
+            return redirect()->route('dashboard.guru');
+        } elseif ($user->hasRole('tata_tertib')) {
+            return redirect()->route('dashboard.tataTertib');
+        } elseif ($user->hasRole('student')) {
+            return redirect()->route('student.dashboard');
+        }
+
+        // Default kalau tidak punya role yang cocok
+        return abort(403, 'Akses ditolak.');
+    }
+
+    /**
+     * Dashboard untuk Guru
+     */
     public function guru()
-    
     {
         $totalSiswa = Student::count();
         $totalKelas = ClassModel::count();
         $totalPelanggaran = ViolationsAndAchievement::where('type', 'pelanggaran')->count();
         $totalPrestasi = ViolationsAndAchievement::where('type', 'prestasi')->count();
 
-        // Top 5 Pelanggaran Siswa
         $topPelanggaranSiswa = Student::select('students.name', 'classes.name as class_name')
             ->join('classes', 'students.class_id', '=', 'classes.id')
             ->join('points', 'students.id', '=', 'points.student_id')
@@ -32,7 +50,6 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // Statistik Pelanggaran Terbanyak
         $pelanggaranTerbanyak = ViolationsAndAchievement::select('description')
             ->join('points', 'violations_and_achievements.id', '=', 'points.violation_id')
             ->where('type', 'pelanggaran')
@@ -48,6 +65,9 @@ class DashboardController extends Controller
         ));
     }
 
+    /**
+     * Dashboard untuk Tata Tertib
+     */
     public function tataTertib()
     {
         $totalSiswa = Student::count();
@@ -58,7 +78,6 @@ class DashboardController extends Controller
             ->where('violations_and_achievements.type', 'prestasi')
             ->count();
 
-        // History Input Pelanggaran Siswa
         $historyPelanggaran = Point::with(['student', 'student.class', 'violation'])
             ->join('violations_and_achievements', 'points.violation_id', '=', 'violations_and_achievements.id')
             ->orderBy('points.date', 'desc')
