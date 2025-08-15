@@ -7,7 +7,7 @@ use App\Models\Student;
 use App\Models\ClassModel;
 use App\Models\ViolationsAndAchievement;
 use App\Models\Point;
-
+use Auth;
 class DashboardController extends Controller
 {
     /**
@@ -15,9 +15,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
-        if ($user->hasRole('teacher')) {
+        if ($user->hasRole('guru')) {
             return redirect()->route('dashboard.guru');
         } elseif ($user->hasRole('tata_tertib')) {
             return redirect()->route('dashboard.tataTertib');
@@ -26,7 +26,7 @@ class DashboardController extends Controller
         }
 
         // Default kalau tidak punya role yang cocok
-        return abort(403, 'Akses ditolak.');
+        return abort(403, 'AKSES DITOLAK, KEBANYAKAN DOSA.');
     }
 
     /**

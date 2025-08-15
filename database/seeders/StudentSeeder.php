@@ -17,19 +17,16 @@ class StudentSeeder extends Seeder
         $users = User::all();
 
         $studentNames = [
-            'Ahmad Rizki Pratama', 'Siti Nurhaliza', 'Muhammad Fadli', 'Dewi Sartika',
-            'Budi Setiawan', 'Maya Anggraini', 'Dimas Prakoso', 'Rina Wulandari',
-            'Fajar Nugraha', 'Indira Permata', 'Arief Rahman', 'Lestari Putri',
-            'Bayu Wijaya', 'Sari Melati', 'Yoga Pratama', 'Fitri Handayani',
-            'Eko Saputra', 'Dian Pertiwi', 'Rizal Fauzi', 'Mega Sari',
-            'Andi Firmansyah', 'Yuni Kartika', 'Hendra Gunawan', 'Nisa Ramadhani',
-            'Gilang Ramadhan', 'Lia Amelia', 'Irfan Hakim', 'Vina Oktavia',
-            'Reza Kurniawan', 'Putri Maharani', 'Dwi Prasetyo', 'Siska Utami',
-            'Wahyu Hidayat', 'Ratna Dewi', 'Fikri Alamsyah', 'Diana Sari',
-            'Agung Nugroho', 'Tika Wulandari', 'Doni Setiawan', 'Evi Rahayu',
-            'Hadi Wijaya', 'Linda Safitri', 'Joni Pratama', 'Mira Handayani',
-            'Krisna Wardhana', 'Sinta Dewi', 'Lucky Ramadan', 'Wati Sukmawati',
-            'Nanda Pratama', 'Yessi Permata'
+            'Abdullah Azzam Al-Ghifari', 'Alwan Baihaqi Tamami', 'Alya Rahma', 'Anasya Almira',
+            'Bagus Bakhtiar', 'Denisa Saharani', 'Desti Syfy Asyfiani', 'Devina Rizqiani Kitnas Safaanah',
+            'Diva Virna Monicca', 'Fairuz Nadhir', 'Fikhriz Yudha Bilhaq', 'Gilang Eko Saputra',
+            'Husni Taufik Alfarisi', 'Ika Marcelina', ' Julian Jaka Wardana', 'La Tahzan Atfal Mitswahandy',
+            'Laena Auliana', 'M. Aasief Fionoza As Sakhuri', 'M. Hafiizh Zahran', 'Moh. Fahrizky Putra Landria',
+            'Muhammad Arif Sulaiman', 'Muhammad Anton Prabowo', 'Muhammad Faris Anwar', 'Muhammad Faydul Arzaq',
+            'Muhammad Ibnu Affan', 'Muhammad Rafi Ash Shidqii', 'Naila Rizqiyana', 'Nur Azizah',
+            'Rafit Indonesia Ken Sugi', 'Rifqi Ahmad Fahreza', 'Selvi Lindawati', 'Sendi Aulya Ramadhani Jumeno',
+            'Tiara Ifani', 'Vanesa Yuliasari', 'Vina Novelia Putri', 'Zayinatul Aflah'
+           
         ];
 
         foreach ($classes as $class) {
