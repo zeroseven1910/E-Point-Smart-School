@@ -96,7 +96,7 @@
                 <i class="fas fa-graduation-cap" style="font-size: 2rem;"></i>
             </div>
             <h2>E-Point Smart School</h2>
-            <p>SMK PLUS AL-MAFTUH</p>
+            <p>SMKN 1 DUKUHTURI</p>
         </div>
 
         @if ($errors->any())

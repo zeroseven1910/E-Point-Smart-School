@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\ViolationController;
+use App\Http\Controllers\ViolationsController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\DashboardController;
 
@@ -28,13 +28,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     
     // Dashboard - bisa diakses semua role
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+    Route::get('/dashboard', [DashboardController::class, 'guru'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'tataTertib'])->name('dashboard');
+
     // Admin routes
     Route::middleware(['role:admin'])->group(function () {
         Route::resource('classes', ClassController::class);
         Route::resource('students', StudentController::class);
-        Route::resource('violations', ViolationController::class);
+        Route::resource('violations', ViolationsController::class);
         Route::get('/admin/reports', function () {
             return view('admin.reports');
         })->name('admin.reports');
