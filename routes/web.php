@@ -36,12 +36,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/guru', [DashboardController::class, 'guru'])->name('dashboard.guru');
 
     // Dashboard khusus tata tertib
-    Route::get('/dashboard/tata-tertib', [DashboardController::class, 'tataTertib'])->name('dashboard.tataTertib');
+    Route::get('/dashboard/tata-tertib', [DashboardController::class, 'tataTertib'])->name('dashboard.tata-tertib');
 
     // Dashboard siswa
     Route::get('/dashboard/student', function () {
         return view('dashboard.student');
-    })->name('student.dashboard');
+    })->name('dashboard.student');
 
     /*
     |--------------------------------------------------------------------------
@@ -49,8 +49,8 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware(['role:admin'])->group(function () {
-        Route::resource('classes', ClassController::class);   // untuk classes.index, classes.create, dll.
-        Route::resource('students', StudentController::class); // untuk students.index, students.create, dll.
+        Route::resource('classes', ClassController::class);     // classes.index, classes.create, dll
+        Route::resource('students', StudentController::class);  // students.index, students.create, dll
         Route::resource('violations', ViolationsController::class);
 
         Route::get('/admin/reports', function () {
