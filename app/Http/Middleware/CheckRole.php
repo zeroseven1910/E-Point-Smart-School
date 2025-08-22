@@ -13,7 +13,7 @@ class CheckRole
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string  $role
+     * @param  string  ...$roles
      * @return mixed
      */
     public function handle(Request $request, Closure $next, ...$roles)
@@ -24,18 +24,28 @@ class CheckRole
         }
 
         $user = Auth::user();
-        
+
         // Jika tidak ada role yang diberikan, lanjutkan
         if (empty($roles)) {
             return $next($request);
         }
 
+        // Normalisasi role user dan role yang diperbolehkan (biar tidak case-sensitive)
+        $userRole = strtolower($user->role ?? '');
+        $allowedRoles = array_map('strtolower', $roles);
+
+        // Debug (sementara, hapus kalau sudah jelas)
+        // dd([
+        //     'userRole' => $userRole,
+        //     'rolesDiperlukan' => $allowedRoles,
+        // ]);
+
         // Cek apakah user memiliki salah satu role yang diizinkan
-        if (in_array($user->role, $roles)) {
+        if (in_array($userRole, $allowedRoles)) {
             return $next($request);
         }
 
-        // Jika tidak memiliki akses, redirect atau abort
-        abort(403, 'Unauthorized access');
+        // Jika tidak memiliki akses → redirect ke halaman khusus unauthorized
+        return redirect('/unauthorized')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
 }
